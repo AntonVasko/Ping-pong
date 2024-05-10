@@ -37,8 +37,8 @@ class Player2(GameSprite):
 
 
 class Ball(GameSprite):
-    def __init__(self, player_image,player_x,player_y,w,h,ball_speed_x, ball_speed_y):
-        super().__init__(player_image,player_x,player_y,w,h,player_speed = ball_speed_x)
+    def __init__(self, player_image, player_x, player_y, w, h, ball_speed_x, ball_speed_y):
+        super().__init__(player_image, player_x, player_y, w, h, player_speed = ball_speed_x)
         self.ball_speed_y = ball_speed_y
     def ball_control(self):
         self.rect.x += self.speed
@@ -66,34 +66,22 @@ pause = font3.render("Pause...",True,(255,255,255))
 restart = font2.render("Do you want to start over?Yes(y) or No(n)",True,(255,255,255))
 
 clock = time.Clock()
-key_pressed_up1 = False
-key_pressed_up2 = False
-key_pressed_down1 = False
-key_pressed_down2 = False
+
 finish = False
 game = True
-while game:
+while game: 
     for e in event.get():
         if e.type == QUIT:
-            game = False
-            
+            game = False                
+    if finish:
+        keys = key.get_pressed()
+        if keys[K_r]:
+            finish = False
+            ball.rect.x = 300
+            ball.rect.y = 350
     if finish != True:
-        if key_pressed_up1 == True:
-            if player1.rect.y > 0 and player1.rect.y != 0:
-                player1.rect.y -= player1.speed
-        if key_pressed_up2 == True:
-            if player2.rect.y > 0 and player2.rect.y != 0:
-                player2.rect.y -= player2.speed
-        if key_pressed_down1 == True:
-            if player1.rect.y < 500 and player1.rect.y != 500:
-                player1.rect.y += player1.speed
-        if key_pressed_down2 == True:
-            if player2.rect.y < 500 and player2.rect.y != 500:
-                player2.rect.y += player2.speed
-                
-                     
-                    
-    if finish != True:
+        if ball.rect.x < 20 or ball.rect.x > 550:
+            finish = True
         window.blit(background,(0,0))
         player1.reset()
         player2.reset()
@@ -101,6 +89,5 @@ while game:
         player1.control()
         player2.control()
         ball.ball_control()
-
     clock.tick(60)
-    display.update()
+    display.flip()
